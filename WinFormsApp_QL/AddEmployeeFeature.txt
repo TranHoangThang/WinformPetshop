@@ -1,0 +1,33 @@
+"Chuoi kết nối ở đây"
+private void buttonEmpAdd_Click(object sender, EventArgs e)
+{
+    try
+    {
+        using (SqlConnection conn = new SqlConnection(connection))
+        {
+            conn.Open();
+
+            string insertQuery = $"INSERT INTO EmployeeTbl (NameEmp, Gender, DOB, Role, Address, Phone) " +
+                                 $"VALUES (@NameEmp, @Gender, @DOB, @Role, @Address, @Phone)";
+
+            using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
+            {
+                cmd.Parameters.AddWithValue("@NameEmp", textBoxEmpName.Text);
+                cmd.Parameters.AddWithValue("@Gender", comboBoxEmpGender.Text);
+                cmd.Parameters.AddWithValue("@DOB", dateTimePickerDOB.Value);
+                cmd.Parameters.AddWithValue("@Role", comboBoxRole.Text);
+                cmd.Parameters.AddWithValue("@Address", textBoxEmpAddress.Text);
+                cmd.Parameters.AddWithValue("@Phone", textBoxEmpPhone.Text);
+
+                cmd.ExecuteNonQuery();
+            }
+            conn.Close();
+            EmpLoad();
+            MessageBox.Show("Employee added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show(ex.Message);
+    }
+}
