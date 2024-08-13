@@ -1,0 +1,40 @@
+//Delete
+private void buttonDel_Click(object sender, EventArgs e)
+{
+    string itemName = textBoxDelete.Text;
+    DeleteItem(itemName);
+
+    txtName.Clear();
+    comboBoxType.SelectedIndex = -1;
+    txtQuantity.Clear();
+    txtPrice.Clear();
+    textBoxDelete.Clear();
+    comboBoxFind.SelectedIndex = -1;
+}
+private void DeleteItem(string itemName)
+{
+    try
+    {
+        using (SqlConnection conn = new SqlConnection(connectionString))
+        {
+            string query = "DELETE FROM ProductTbl WHERE NameProduct = @Name";
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Name", itemName);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        LoadProducts();
+    }
+    catch (SqlException ex)
+    {
+        MessageBox.Show($"An error occurred accessing the database: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}
+
+//xóa dựa vào itemName hoặc chọn sản phẩm khi click chuột
