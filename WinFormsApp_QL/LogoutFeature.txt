@@ -1,0 +1,10 @@
+//Logout
+private void buttonLogout_Click(object sender, EventArgs e)
+{
+    Login newform = new Login();
+    this.Hide();
+    newform.ShowDialog();
+    this.Close();
+}
+
+//Đây là nút tắt giao diện hiện tại để trở về giao diện login reset người dùng về ban đầu (Không đăng nhập)
